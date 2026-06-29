@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>决策流 — AI异步会议决策系统</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', 'Noto Sans SC', sans-serif;
+    background: #F5F7FA;
+    color: #1A1A2E;
+    width: 1089mm;
+    height: 841mm;
+    padding: 50mm 60mm;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .block-title {
+    width: 969mm;
+    height: 84.1mm;
+    background: #002FA7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10mm;
+  }
+  .block-title h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 84pt;
+    color: #FFFFFF;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+  }
+  .block-title h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 36pt;
+    color: rgba(255,255,255,0.9);
+    margin-top: 16px;
+  }
+  .block-title .slogan {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 28pt;
+    color: #00E676;
+    margin-top: 12px;
+  }
+
+  .block-pain {
+    width: 969mm;
+    height: 126.15mm;
+    background: #F5F7FA;
+    display: flex;
+    flex-direction: column;
+    padding: 10mm 0;
+    margin-bottom: 10mm;
+  }
+  .block-pain h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36pt;
+    color: #002FA7;
+    margin-bottom: 8mm;
+  }
+  .pain-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .pain-data {
+    display: flex;
+    gap: 20mm;
+  }
+  .data-circle {
+    width: 60mm;
+    height: 60mm;
+    border-radius: 50%;
+    background: #002FA7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .data-circle .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 24pt;
+    color: #FFFFFF;
+  }
+  .data-circle .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 12pt;
+    color: #FFFFFF;
+    margin-top: 4px;
+  }
+  .pain-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+  }
+  .pain-card {
+    width: 280mm;
+    height: 50mm;
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding: 8mm 12mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .pain-card:nth-child(1) { border-left: 4px solid #FF9500; }
+  .pain-card:nth-child(2) { border-left: 4px solid #002FA7; }
+  .pain-card:nth-child(3) { border-left: 4px solid #6B7280; }
+  .pain-card h4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 18pt;
+    color: #1A1A2E;
+  }
+  .pain-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 14pt;
+    color: #6B7280;
+    margin-top: 2px;
+  }
+
+  .block-journey {
+    width: 969mm;
+    height: 126.15mm;
+    background: #F5F7FA;
+    padding: 10mm 0;
+    margin-bottom: 10mm;
+  }
+  .block-journey h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36pt;
+    color: #002FA7;
+    margin-bottom: 6mm;
+  }
+  .journey-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .user-profiles {
+    display: flex;
+    gap: 20mm;
+  }
+  .user-card {
+    width: 220mm;
+    height: 80mm;
+    background: #FFFFFF;
+    border-radius: 12px;
+    border-top: 3px solid #002FA7;
+    padding: 6mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .user-card .name {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16pt;
+    color: #002FA7;
+  }
+  .user-card .role {
+    font-family: 'Inter', sans-serif;
+    font-size: 12pt;
+    color: #6B7280;
+    margin-top: 2px;
+  }
+  .user-card .quote {
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 12pt;
+    color: #1A1A2E;
+    margin-top: 4px;
+    padding-left: 8px;
+    border-left: 2px solid #00E676;
+  }
+  .journey-stages {
+    display: flex;
+    gap: 12mm;
+    align-items: center;
+    margin-top: 6mm;
+  }
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .stage-dot {
+    width: 30mm;
+    height: 30mm;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 11pt;
+    color: #FFFFFF;
+  }
+  .stage.s1 .stage-dot { background: #6B7280; }
+  .stage.s2 .stage-dot { background: #FF9500; }
+  .stage.s3 .stage-dot { background: #002FA7; }
+  .stage.s4 .stage-dot { background: #FF9500; }
+  .stage.s5 .stage-dot { background: #6B7280; }
+  .stage .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11pt;
+    color: #1A1A2E;
+    margin-top: 4px;
+  }
+  .stage .emotion {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    color: #6B7280;
+  }
+  .stage-arrow {
+    font-size: 20pt;
+    color: #E5E7EB;
+  }
+
+  .block-blueprint {
+    width: 969mm;
+    height: 210.25mm;
+    background: #F5F7FA;
+    padding: 10mm 0;
+    margin-bottom: 10mm;
+  }
+  .block-blueprint h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36pt;
+    color: #002FA7;
+    margin-bottom: 6mm;
+  }
+  .blueprint-swimlanes {
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+  }
+  .swimlane {
+    display: flex;
+    align-items: center;
+    height: 60mm;
+    padding: 0 8mm;
+  }
+  .swimlane-label {
+    width: 80mm;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 14pt;
+    color: #FFFFFF;
+    padding: 4mm;
+    text-align: center;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .swimlane.s1 { background: #FFFFFF; }
+  .swimlane.s1 .swimlane-label { background: #002FA7; }
+  .swimlane.s2 { background: #EBF5FB; }
+  .swimlane.s2 .swimlane-label { background: #002FA7; }
+  .swimlane.s3 { background: #F2F3F4; }
+  .swimlane.s3 .swimlane-label { background: #6B7280; }
+  .swimlane-items {
+    display: flex;
+    gap: 4mm;
+    flex: 1;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .swim-item {
+    padding: 6mm 8mm;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12pt;
+    text-align: center;
+  }
+  .swimlane.s1 .swim-item { background: #FFFFFF; border: 1px solid #1A1A2E; color: #1A1A2E; }
+  .swimlane.s2 .swim-item { background: #002FA7; color: #FFFFFF; }
+  .swimlane.s3 .swim-item { background: #6B7280; color: #FFFFFF; }
+  .decision-marker {
+    width: 8mm;
+    height: 8mm;
+    border-radius: 50%;
+    background: #00E676;
+    display: inline-block;
+    margin-left: 2mm;
+  }
+
+  .block-arch {
+    width: 969mm;
+    height: 168.2mm;
+    background: #F5F7FA;
+    padding: 10mm 0;
+    margin-bottom: 10mm;
+  }
+  .block-arch h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36pt;
+    color: #002FA7;
+    margin-bottom: 6mm;
+  }
+  .arch-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 3mm;
+  }
+  .arch-layer {
+    display: flex;
+    align-items: center;
+    height: 50mm;
+    padding: 0 8mm;
+    border-radius: 6px;
+  }
+  .arch-layer.l1 { background: #002FA7; }
+  .arch-layer.l2 { background: #3B82F6; }
+  .arch-layer.l3 { background: #00E676; }
+  .arch-layer.l4 { background: #8B5CF6; }
+  .arch-layer.l5 { background: #6B7280; }
+  .arch-label {
+    width: 120mm;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 14pt;
+    color: #FFFFFF;
+    flex-shrink: 0;
+  }
+  .arch-layer.l3 .arch-label { color: #1A1A2E; }
+  .arch-items {
+    display: flex;
+    gap: 3mm;
+    flex: 1;
+    justify-content: space-around;
+  }
+  .arch-item {
+    padding: 4mm 6mm;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12pt;
+    color: #FFFFFF;
+    background: rgba(255,255,255,0.15);
+  }
+  .arch-layer.l3 .arch-item { color: #1A1A2E; background: rgba(0,0,0,0.1); }
+  .layer-arrow {
+    text-align: center;
+    font-size: 16pt;
+    color: #1A1A2E;
+    line-height: 1;
+  }
+
+  .block-ui {
+    width: 969mm;
+    height: 168.2mm;
+    background: #F5F7FA;
+    padding: 10mm 0;
+    margin-bottom: 10mm;
+  }
+  .block-ui h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 36pt;
+    color: #002FA7;
+    margin-bottom: 6mm;
+  }
+  .ui-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 4mm;
+    height: 140mm;
+  }
+  .ui-cell {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .ui-header {
+    height: 24px;
+    background: #E0E0E0;
+    display: flex;
+    align-items: center;
+    padding: 0 8px;
+    gap: 4px;
+  }
+  .ui-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .ui-dot.d1 { background: #FF9500; }
+  .ui-dot.d2 { background: #00E676; }
+  .ui-dot.d3 { background: #002FA7; }
+  .ui-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 14pt;
+    color: #FFFFFF;
+    background: #002FA7;
+    padding: 2mm 4mm;
+  }
+  .ui-body {
+    flex: 1;
+    padding: 4mm;
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    color: #6B7280;
+  }
+
+  .block-value {
+    width: 969mm;
+    height: 84.1mm;
+    background: #F5F7FA;
+    padding: 10mm 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .value-left {
+    width: 55%;
+  }
+  .value-item {
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    margin-bottom: 4mm;
+  }
+  .value-icon {
+    width: 40mm;
+    height: 40mm;
+    border-radius: 50%;
+    background: #002FA7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20pt;
+    color: #FFFFFF;
+    flex-shrink: 0;
+  }
+  .value-text h4 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16pt;
+    color: #002FA7;
+  }
+  .value-text p {
+    font-family: 'Inter', sans-serif;
+    font-size: 12pt;
+    color: #6B7280;
+  }
+  .value-right {
+    width: 42%;
+    display: flex;
+    flex-direction: column;
+    gap: 4mm;
+  }
+  .tags {
+    display: flex;
+    gap: 3mm;
+    flex-wrap: wrap;
+  }
+  .tag {
+    padding: 2mm 4mm;
+    background: #EBF5FB;
+    border: 1px solid #002FA7;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 12pt;
+    color: #002FA7;
+  }
+  .big-numbers {
+    display: flex;
+    gap: 4mm;
+    align-items: center;
+  }
+  .big-num {
+    text-align: center;
+  }
+  .big-num .num {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 28pt;
+    color: #002FA7;
+  }
+  .big-num .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10pt;
+    color: #6B7280;
+  }
+  .num-sep {
+    width: 2px;
+    height: 20mm;
+    background: #00E676;
+  }
+
+  .data-source {
+    position: absolute;
+    bottom: 8mm;
+    right: 60mm;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10pt;
+    color: #6B7280;
+  }
+</style>
+</head>
+<body>
+
+<div class="block-title">
+  <h1>决策流 — AI异步会议决策系统</h1>
+  <h2>让每一次会议都有结果</h2>
+  <div class="slogan">从"讨论完散会"到"决策即执行"</div>
+</div>
+
+<div class="block-pain">
+  <h3>中国职场人会议效率现状</h3>
+  <div class="pain-content">
+    <div class="pain-data">
+      <div class="data-circle">
+        <div class="num">4.2</div>
+        <div class="label">小时/周</div>
+      </div>
+      <div class="data-circle">
+        <div class="num">67%</div>
+        <div class="label">48h内遗忘</div>
+      </div>
+      <div class="data-circle">
+        <div class="num">83%</div>
+        <div class="label">执行跟踪难</div>
+      </div>
+    </div>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <h4>讨论发散</h4>
+        <p>议题偏离，时间耗尽无结论</p>
+      </div>
+      <div class="pain-card">
+        <h4>决策无记录</h4>
+        <p>口头共识，无结构化留痕</p>
+      </div>
+      <div class="pain-card">
+        <h4>执行无跟踪</h4>
+        <p>责任模糊，进度成黑箱</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block-journey">
+  <h3>用户旅程（User Journey）</h3>
+  <div class="journey-content">
+    <div class="user-profiles">
+      <div class="user-card">
+        <div class="name">李姐</div>
+        <div class="role">项目经理</div>
+        <div class="quote">"开了2小时会，结论只有'再对齐'"</div>
+      </div>
+      <div class="user-card">
+        <div class="name">老王</div>
+        <div class="role">技术负责人</div>
+        <div class="quote">"会上分的任务，3天后发现没人做"</div>
+      </div>
+    </div>
+  </div>
+  <div class="journey-stages">
+    <div class="stage s1">
+      <div class="stage-dot">1</div>
+      <div class="label">会前准备</div>
+      <div class="emotion">平静</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage s2">
+      <div class="stage-dot">2</div>
+      <div class="label">会中讨论</div>
+      <div class="emotion">焦虑</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage s3">
+      <div class="stage-dot">3</div>
+      <div class="label">会后整理</div>
+      <div class="emotion">疲惫</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage s4">
+      <div class="stage-dot">4</div>
+      <div class="label">任务执行</div>
+      <div class="emotion">困惑</div>
+    </div>
+    <div class="stage-arrow">→</div>
+    <div class="stage s5">
+      <div class="stage-dot">5</div>
+      <div class="label">结果复盘</div>
+      <div class="emotion">无奈</div>
+    </div>
+  </div>
+</div>
+
+<div class="block-blueprint">
+  <h3>服务蓝图（Service Blueprint）</h3>
+  <div class="blueprint-swimlanes">
+    <div class="swimlane s1">
+      <div class="swimlane-label">用户行为</div>
+      <div class="swimlane-items">
+        <div class="swim-item">开启会议</div>
+        <div class="swim-item">标记决策点<span class="decision-marker"></span></div>
+        <div class="swim-item">接收决策摘要</div>
+        <div class="swim-item">查看任务</div>
+        <div class="swim-item">确认完成</div>
+      </div>
+    </div>
+    <div class="swimlane s2">
+      <div class="swimlane-label">触点交互</div>
+      <div class="swimlane-items">
+        <div class="swim-item">会议插件实时转录</div>
+        <div class="swim-item">AI弹窗提示</div>
+        <div class="swim-item">IM机器人推送</div>
+        <div class="swim-item">任务看板同步</div>
+        <div class="swim-item">到期提醒</div>
+      </div>
+    </div>
+    <div class="swimlane s3">
+      <div class="swimlane-label">后台支持</div>
+      <div class="swimlane-items">
+        <div class="swim-item">ASR语音识别</div>
+        <div class="swim-item">NLP语义提取</div>
+        <div class="swim-item">LLM决策结构化</div>
+        <div class="swim-item">任务数据库写入<span class="decision-marker"></span></div>
+        <div class="swim-item">提醒调度服务</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block-arch">
+  <h3>系统架构（System Architecture）</h3>
+  <div class="arch-layers">
+    <div class="arch-layer l1">
+      <div class="arch-label">用户触点层</div>
+      <div class="arch-items">
+        <div class="arch-item">会议插件</div>
+        <div class="arch-item">企业IM机器人</div>
+        <div class="arch-item">任务看板</div>
+        <div class="arch-item">移动端小程序</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="arch-layer l2">
+      <div class="arch-label">API网关层</div>
+      <div class="arch-items">
+        <div class="arch-item">RESTful API</div>
+        <div class="arch-item">WebSocket</div>
+        <div class="arch-item">身份鉴权</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="arch-layer l3">
+      <div class="arch-label">业务逻辑层</div>
+      <div class="arch-items">
+        <div class="arch-item">决策提取引擎</div>
+        <div class="arch-item">任务管理</div>
+        <div class="arch-item">提醒调度</div>
+        <div class="arch-item">权限管理</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="arch-layer l4">
+      <div class="arch-label">AI能力层</div>
+      <div class="arch-items">
+        <div class="arch-item">语音识别(ASR)</div>
+        <div class="arch-item">语义理解(NLP)</div>
+        <div class="arch-item">决策结构化(LLM)</div>
+        <div class="arch-item">决策树生成</div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="arch-layer l5">
+      <div class="arch-label">数据层</div>
+      <div class="arch-items">
+        <div class="arch-item">决策图谱数据库</div>
+        <div class="arch-item">任务状态库</div>
+        <div class="arch-item">用户画像库</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block-ui">
+  <h3>核心界面原型（Key Interfaces）</h3>
+  <div class="ui-grid">
+    <div class="ui-cell">
+      <div class="ui-header">
+        <div class="ui-dot d1"></div>
+        <div class="ui-dot d2"></div>
+        <div class="ui-dot d3"></div>
+      </div>
+      <div class="ui-title">会议插件 — 实时转录+AI决策提取</div>
+      <div class="ui-body">左侧：实时转录区<br>右侧：AI决策提取面板<br>底部：生成决策树按钮</div>
+    </div>
+    <div class="ui-cell">
+      <div class="ui-header">
+        <div class="ui-dot d1"></div>
+        <div class="ui-dot d2"></div>
+        <div class="ui-dot d3"></div>
+      </div>
+      <div class="ui-title">决策树 — 结构化决策可视化</div>
+      <div class="ui-body">左侧：树状决策图<br>右侧：责任人卡片</div>
+    </div>
+    <div class="ui-cell">
+      <div class="ui-header">
+        <div class="ui-dot d1"></div>
+        <div class="ui-dot d2"></div>
+        <div class="ui-dot d3"></div>
+      </div>
+      <div class="ui-title">任务看板 — 追踪执行状态</div>
+      <div class="ui-body">三列：待执行/进行中/已完成<br>卡片含优先级色条</div>
+    </div>
+    <div class="ui-cell">
+      <div class="ui-header">
+        <div class="ui-dot d1"></div>
+        <div class="ui-dot d2"></div>
+        <div class="ui-dot d3"></div>
+      </div>
+      <div class="ui-title">个人仪表盘 — 效率数据可视化</div>
+      <div class="ui-body">环形图：决策参与率<br>待办列表 + 7天趋势</div>
+    </div>
+  </div>
+</div>
+
+<div class="block-value">
+  <div class="value-left">
+    <div class="value-item">
+      <div class="value-icon">🎯</div>
+      <div class="value-text">
+        <h4>实时决策提取</h4>
+        <p>会议语音即结构化，告别会后整理</p>
+      </div>
+    </div>
+    <div class="value-item">
+      <div class="value-icon">🌳</div>
+      <div class="value-text">
+        <h4>决策树自动转任务</h4>
+        <p>讨论即执行，责任自动到人</p>
+      </div>
+    </div>
+    <div class="value-item">
+      <div class="value-icon">🔄</div>
+      <div class="value-text">
+        <h4>异步追踪闭环</h4>
+        <p>进度可视，结果可量化复盘</p>
+      </div>
+    </div>
+  </div>
+  <div class="value-right">
+    <div class="tags">
+      <div class="tag">远程团队</div>
+      <div class="tag">跨部门协作</div>
+      <div class="tag">敏捷开发</div>
+    </div>
+    <div class="big-numbers">
+      <div class="big-num">
+        <div class="num">30%</div>
+        <div class="label">减少无效会议</div>
+      </div>
+      <div class="num-sep"></div>
+      <div class="big-num">
+        <div class="num">45%</div>
+        <div class="label">提升执行率</div>
+      </div>
+      <div class="num-sep"></div>
+      <div class="big-num">
+        <div class="num">50%</div>
+        <div class="label">降低同步成本</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="data-source">数据来源：基于2024年企业协作效率调研</div>
+
+</body>
+</html>
