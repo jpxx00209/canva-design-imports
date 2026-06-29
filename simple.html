@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>决策流 — AI异步会议决策系统</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #F5F7FA; color: #1A1A2E; margin: 0; padding: 0; }
+  table { border-collapse: collapse; width: 100%; }
+  td { vertical-align: top; padding: 8px; }
+  .title { background: #002FA7; color: #fff; text-align: center; padding: 20px; }
+  .title h1 { font-size: 36px; margin: 0; }
+  .title h2 { font-size: 18px; margin: 8px 0 0; color: #fff; opacity: 0.9; }
+  .title .slogan { font-size: 16px; color: #00E676; margin-top: 6px; font-weight: bold; }
+  .section-title { color: #002FA7; font-size: 20px; font-weight: bold; padding: 12px 0 4px; }
+  .circle { width: 80px; height: 80px; border-radius: 50%; background: #002FA7; color: #fff; text-align: center; display: inline-block; margin-right: 16px; line-height: 80px; font-weight: bold; font-size: 18px; }
+  .card { background: #fff; border-left: 4px solid #FF9500; padding: 8px 12px; margin: 6px 0; border-radius: 4px; }
+  .card h4 { margin: 0; font-size: 14px; color: #1A1A2E; }
+  .card p { margin: 4px 0 0; font-size: 12px; color: #6B7280; }
+  .swimlane { background: #fff; padding: 8px; margin: 4px 0; border-radius: 4px; }
+  .swimlane-label { background: #002FA7; color: #fff; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+  .arch-layer { background: #002FA7; color: #fff; padding: 8px; margin: 4px 0; border-radius: 4px; font-size: 12px; }
+  .arch-layer.l2 { background: #3B82F6; }
+  .arch-layer.l3 { background: #00E676; color: #1A1A2E; }
+  .arch-layer.l4 { background: #8B5CF6; }
+  .arch-layer.l5 { background: #6B7280; }
+  .ui-box { background: #fff; border: 1px solid #E5E7EB; padding: 8px; margin: 4px; border-radius: 4px; }
+  .ui-title { background: #002FA7; color: #fff; padding: 4px; font-size: 12px; font-weight: bold; }
+  .tag { background: #EBF5FB; border: 1px solid #002FA7; color: #002FA7; padding: 4px 8px; border-radius: 4px; display: inline-block; font-size: 12px; margin-right: 4px; }
+  .big-num { font-size: 24px; font-weight: bold; color: #002FA7; }
+  .source { font-size: 10px; color: #6B7280; text-align: right; padding: 8px; }
+</style>
+</head>
+<body>
+
+<div class="title">
+  <h1>决策流 — AI异步会议决策系统</h1>
+  <h2>让每一次会议都有结果</h2>
+  <div class="slogan">从"讨论完散会"到"决策即执行"</div>
+</div>
+
+<table><tr>
+<td style="width:60%">
+  <div class="section-title">中国职场人会议效率现状</div>
+  <div style="padding:8px 0">
+    <div class="circle">4.2<br><span style="font-size:10px">小时/周</span></div>
+    <div class="circle">67%<br><span style="font-size:10px">48h内遗忘</span></div>
+    <div class="circle">83%<br><span style="font-size:10px">执行跟踪难</span></div>
+  </div>
+</td>
+<td style="width:40%">
+  <div class="card"><h4>讨论发散</h4><p>议题偏离，时间耗尽无结论</p></div>
+  <div class="card" style="border-left-color:#002FA7"><h4>决策无记录</h4><p>口头共识，无结构化留痕</p></div>
+  <div class="card" style="border-left-color:#6B7280"><h4>执行无跟踪</h4><p>责任模糊，进度成黑箱</p></div>
+</td>
+</tr></table>
+
+<div class="section-title">用户旅程（User Journey）</div>
+<table><tr>
+<td style="width:45%">
+  <div class="ui-box"><strong>李姐</strong> | 项目经理<br><em>"开了2小时会，结论只有'再对齐'"</em></div>
+  <div class="ui-box"><strong>老王</strong> | 技术负责人<br><em>"会上分的任务，3天后发现没人做"</em></div>
+</td>
+<td style="width:55%">
+  <table><tr>
+    <td><div style="text-align:center"><div style="width:30px;height:30px;border-radius:50%;background:#6B7280;color:#fff;text-align:center;line-height:30px;margin:auto">1</div><div style="font-size:10px">会前准备<br>平静</div></div></td>
+    <td><div style="text-align:center"><div style="width:30px;height:30px;border-radius:50%;background:#FF9500;color:#fff;text-align:center;line-height:30px;margin:auto">2</div><div style="font-size:10px">会中讨论<br>焦虑</div></div></td>
+    <td><div style="text-align:center"><div style="width:30px;height:30px;border-radius:50%;background:#002FA7;color:#fff;text-align:center;line-height:30px;margin:auto">3</div><div style="font-size:10px">会后整理<br>疲惫</div></div></td>
+    <td><div style="text-align:center"><div style="width:30px;height:30px;border-radius:50%;background:#FF9500;color:#fff;text-align:center;line-height:30px;margin:auto">4</div><div style="font-size:10px">任务执行<br>困惑</div></div></td>
+    <td><div style="text-align:center"><div style="width:30px;height:30px;border-radius:50%;background:#6B7280;color:#fff;text-align:center;line-height:30px;margin:auto">5</div><div style="font-size:10px">结果复盘<br>无奈</div></div></td>
+  </tr></table>
+</td>
+</tr></table>
+
+<div class="section-title">服务蓝图（Service Blueprint）</div>
+<div class="swimlane"><span class="swimlane-label">用户行为</span> 开启会议 → 标记决策点 → 接收决策摘要 → 查看任务 → 确认完成</div>
+<div class="swimlane" style="background:#EBF5FB"><span class="swimlane-label">触点交互</span> 会议插件实时转录 → AI弹窗提示 → IM机器人推送 → 任务看板同步 → 到期提醒</div>
+<div class="swimlane" style="background:#F2F3F4"><span class="swimlane-label" style="background:#6B7280">后台支持</span> ASR语音识别 → NLP语义提取 → LLM决策结构化 → 任务数据库写入 → 提醒调度服务</div>
+
+<div class="section-title">系统架构（System Architecture）</div>
+<div class="arch-layer">用户触点层：会议插件 | 企业IM机器人 | 任务看板 | 移动端小程序</div>
+<div class="arch-layer l2">API网关层：RESTful API | WebSocket | 身份鉴权</div>
+<div class="arch-layer l3">业务逻辑层：决策提取引擎 | 任务管理 | 提醒调度 | 权限管理</div>
+<div class="arch-layer l4">AI能力层：语音识别(ASR) | 语义理解(NLP) | 决策结构化(LLM) | 决策树生成</div>
+<div class="arch-layer l5">数据层：决策图谱数据库 | 任务状态库 | 用户画像库</div>
+
+<div class="section-title">核心界面原型（Key Interfaces）</div>
+<table><tr>
+<td class="ui-box"><div class="ui-title">会议插件 — 实时转录+AI决策提取</div><div style="font-size:11px;color:#6B7280;padding:4px">左侧实时转录区，右侧AI决策提取面板，底部生成决策树按钮</div></td>
+<td class="ui-box"><div class="ui-title">决策树 — 结构化决策可视化</div><div style="font-size:11px;color:#6B7280;padding:4px">左侧树状决策图，右侧责任人卡片</div></td>
+</tr><tr>
+<td class="ui-box"><div class="ui-title">任务看板 — 追踪执行状态</div><div style="font-size:11px;color:#6B7280;padding:4px">三列：待执行/进行中/已完成，卡片含优先级色条</div></td>
+<td class="ui-box"><div class="ui-title">个人仪表盘 — 效率数据可视化</div><div style="font-size:11px;color:#6B7280;padding:4px">环形图：决策参与率，待办列表+7天趋势</div></td>
+</tr></table>
+
+<div class="section-title">创新价值</div>
+<table><tr>
+<td style="width:55%">
+  <div style="padding:4px 0"><strong style="color:#002FA7">实时决策提取</strong> — 会议语音即结构化，告别会后整理</div>
+  <div style="padding:4px 0"><strong style="color:#002FA7">决策树自动转任务</strong> — 讨论即执行，责任自动到人</div>
+  <div style="padding:4px 0"><strong style="color:#002FA7">异步追踪闭环</strong> — 进度可视，结果可量化复盘</div>
+</td>
+<td style="width:45%">
+  <div style="padding:4px 0"><span class="tag">远程团队</span> <span class="tag">跨部门协作</span> <span class="tag">敏捷开发</span></div>
+  <div style="padding:8px 0">
+    <span class="big-num">30%</span> <span style="color:#6B7280;font-size:11px">减少无效会议</span>
+    <span style="color:#00E676">|</span>
+    <span class="big-num">45%</span> <span style="color:#6B7280;font-size:11px">提升执行率</span>
+    <span style="color:#00E676">|</span>
+    <span class="big-num">50%</span> <span style="color:#6B7280;font-size:11px">降低同步成本</span>
+  </div>
+</td>
+</tr></table>
+
+<div class="source">数据来源：基于2024年企业协作效率调研</div>
+
+</body>
+</html>
